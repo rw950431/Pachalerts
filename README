@@ -1,0 +1,22 @@
+
+# see http://code.google.com/appengine/
+# download and unzip latest GAE SDK
+# curl -o google_appengine_1.6.3.zip http://googleappengine.googlecode.com/files/google_appengine_1.6.3.zip
+
+#unzip google_appengine_1.6.3.zip
+
+# modify /etc/sysconfig/iptables to allow port 8080
+#ipables -A INPUT -m state --state NEW -m tcp -p tcp --dport 8080 --source xxx.xxx.xxx.xxx/24  -j ACCEPT
+
+# run demo app
+
+#/path/to/google_appengine/dev_appserver.py -a xxx.xxx.xxx.xxx /path/to/google_appengine/demos/guestbook
+
+# browse to http://xxx.xxx.xxx.xxx:8080
+# create
+# copy contents of guestbook demo to another directory and modify
+#
+# deploy
+# create app at https://appengine.google.com/  (application: line in app.yaml must match this name)
+# /path/to/google_appengine/appcfg.py update /path/to/pachalerts/
+#
