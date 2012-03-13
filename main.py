@@ -23,11 +23,23 @@ from google.appengine.ext import webapp
 from google.appengine.ext.webapp.util import run_wsgi_app
 #from google.appengine.ext.webapp import util
 from bottle import Bottle, run,static_file
-from datastore import Trigger
+from datastore import Trigger, Statistics
 from google.appengine.ext import db
 
 NOTIFY_INTERVAL=datetime.timedelta(hours=8)
 #NOTIFY_INTERVAL=datetime.timedelta(minutes=2)
+
+if not Statistics.all().get():
+  #create the record to hold the stats
+  n=Statistics() 
+  n.users=1
+  n.triggers=0
+  n.notifies=0
+  n.probes=0
+  n.chats=0
+  n.row_total=0
+  n.put()
+#
 
 app = Bottle()
 
@@ -42,6 +54,9 @@ def index():
 @app.error(404)
 @app.error(405)
 def error404(error):
+  n=Statistics.all().get()
+  n.probes+=1
+  n.put()
   return ''
 
 # curl -d "some data" http://<url>/trigger/blah 
@@ -53,6 +68,8 @@ def trigger_post(trigger='xyz'):
     updated=[]
     now=datetime.datetime.fromtimestamp(time.time())
     then=now-NOTIFY_INTERVAL
+    n=Statistics.all().get()
+    n.triggers+=1
     for result in Trigger.all().filter("trigger =",trigger):
 #dont notify user more often than NOTIFY_INTERVAL
       if (result.last_notify<=then) and (not result.paused):
@@ -60,7 +77,9 @@ def trigger_post(trigger='xyz'):
         xmpp.send_message(result.user.address, '%s:%s' %(trigger,result.desc)  )
         result.last_notify=now
         updated.append(result)
+        n.notifies+=1
     db.put(updated)
+    n.put()
     return ""
 
 def main():
