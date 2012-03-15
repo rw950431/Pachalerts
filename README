@@ -1,26 +1,17 @@
 
-#Pachalerts
+Pachalerts
 
-#pachube triggers to gTalk IM service on google app engine
+Originally written to send Pachube triggers as Google Talk instant messages it should possible to use it
+to send an IM to any XMPP client in response to a HTTP POST
 
-# see http://code.google.com/appengine/
-# download and unzip latest GAE SDK
-# curl -o google_appengine_1.6.3.zip http://googleappengine.googlecode.com/files/google_appengine_1.6.3.zip
+Written in python to run on Google App Engine- makes extensive use of GAE's XMPP services
 
-#unzip google_appengine_1.6.3.zip
+ 
+Try it out at http://pachalerts.appspot.com/
 
-# modify /etc/sysconfig/iptables to allow port 8080
-#ipables -A INPUT -m state --state NEW -m tcp -p tcp --dport 8080 --source xxx.xxx.xxx.xxx/24  -j ACCEPT
+Notes:
+Uses the Bottle framework for RESTful web interface http://bottlepy.org/
 
-# run demo app
+GAE XMPP docs http://code.google.com/appengine/docs/python/xmpp/overview.html
 
-#/path/to/google_appengine/dev_appserver.py -a xxx.xxx.xxx.xxx /path/to/google_appengine/demos/guestbook
 
-# browse to http://xxx.xxx.xxx.xxx:8080
-# create
-# copy contents of guestbook demo to another directory and modify
-#
-# deploy
-# create app at https://appengine.google.com/  (application: line in app.yaml must match this name)
-# /path/to/google_appengine/appcfg.py update /path/to/pachalerts/
-#
