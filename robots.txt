@@ -1,0 +1,2 @@
+Usr-agent: *
+Disallow: /trigger/
