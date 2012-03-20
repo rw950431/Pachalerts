@@ -52,6 +52,10 @@ app = Bottle()
 def index():
   return static_file('index.html',root=".")
 
+@app.route('/robots.txt')
+def robots():
+  return static_file('robots.txt',root=".")
+
 #app isnt meant to return anything for GETs
 #error 405 generated when calling http://<url>/trigger/:trigger
 @app.error(404)
@@ -76,8 +80,8 @@ def trigger_post(trigger='xyz'):
     for result in Trigger.all().filter("trigger =",trigger):
 #dont notify user more often than NOTIFY_INTERVAL
       if (result.last_notify<=then) and (not result.paused):
-        logging.info("send_message: %s, [%s] %s" % (result.user.address,trigger,result.desc))
-        xmpp.send_message(result.user.address, '%s:%s' %(trigger,result.desc)  )
+        logging.info("send_message: %s: %s [%s]" % (result.user.address,result.desc,trigger))
+        xmpp.send_message(result.user.address, '%s [%s]' %(result.desc,trigger)  )
         result.last_notify=now
         updated.append(result)
         n.notifies+=1

@@ -46,7 +46,7 @@ from google.appengine.ext.webapp import xmpp_handlers
 
 from datastore import Trigger,Statistics
 
-START_MSG = ("Now if you POST to %s/trigger/%s I will send you\n%s:%s")
+START_MSG = ("Now if you POST to %s/trigger/%s I will send you\n%s [%s]")
 STOP_MSG = ("Stopped %s OK")
 PAUSE_MSG = ("Paused- send /resume %s to resume")
 RESUME_MSG = ("Resumed %s")
@@ -168,7 +168,7 @@ class XmppHandler(xmpp_handlers.CommandHandler):
       stats.row_total+=1
 
     logging.info("start_command: %s, [%s] %s" % (user,trigger,desc))
-    message.reply(START_MSG % (self.request.host_url,trigger,trigger,desc))
+    message.reply(START_MSG % (self.request.host_url,trigger,desc,trigger))
     stats.put()
     
   def stop_command(self, message=None):
